@@ -1,6 +1,6 @@
 import { getHomePage } from "@/data/loaders";
 import { notFound } from "next/navigation";
-
+import ClientComponent from "@/components/ClientComponent";
 async function loader() {
   const data = await getHomePage();
   if(!data) notFound();
@@ -15,6 +15,9 @@ export default async function HomeRoute() {
   <div>
     <h1>{data.title}</h1>
     <p>{data.description}</p>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <ClientComponent />
+    </main>
   </div>
   );
 }

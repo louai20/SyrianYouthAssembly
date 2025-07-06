@@ -24,5 +24,13 @@ export async function getHomePage() {
   const BASE_URL = getStrapURL();
   const url = new URL(path, BASE_URL);
   url.search = homePageQuery;
-  return await fetchAPI(url.href, {method: "GET"});
+
+  try {
+    const res = await fetchAPI(url.href, { method: "GET" });
+    if (!res?.data) return null;
+    return res;
+  } catch (error) {
+    console.error("Failed to fetch home page data:", error);
+    return null;
+  }
 }
