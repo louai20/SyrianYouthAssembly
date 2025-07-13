@@ -1,6 +1,6 @@
 import qs from 'qs';
-import { fetchAPI } from "@/utils/fetch-api";
-import { getStrapURL } from "@/utils/get-strapi-url";
+import { fetchAPI } from "@/src/utils/fetch-api";
+import { getStrapURL } from "@/src/utils/get-strapi-url";
 
 const homePageQuery = qs.stringify({
   populate: {

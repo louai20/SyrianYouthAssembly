@@ -5,6 +5,15 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { header } from "next/headers";
 
+export async function getUserSession(){
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+        return null;
+    }
+    return {status: "success", user: data?.user};
+}
+
 export async function signUp(formData: FormData) {
     const supabase = await createClient();
     const credentials = {
