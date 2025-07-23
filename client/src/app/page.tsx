@@ -1,4 +1,4 @@
-import { getHomePage } from "@/data/loaders";
+import { getHomePage } from "@/src/data/loaders";
 import { notFound } from "next/navigation";
 import ClientComponent from "@/components/ClientComponent";
 async function loader() {
