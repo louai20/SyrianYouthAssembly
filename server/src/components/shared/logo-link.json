@@ -1,12 +1,19 @@
 {
-  "collectionName": "components_elements_logos",
+  "collectionName": "components_shared_logo_links",
   "info": {
-    "displayName": "Logo"
+    "displayName": "Logo Link"
   },
   "options": {},
   "attributes": {
-    "logoText": {
+    "label": {
       "type": "string"
+    },
+    "href": {
+      "type": "string"
+    },
+    "isExternal": {
+      "type": "boolean",
+      "default": false
     },
     "image": {
       "type": "media",

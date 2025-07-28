@@ -99,11 +99,11 @@ export async function signOut() {
 export async function forgotPassword(formData : FormData) {
     const supabase = await createClient();
     const origin = (await headers()).get("origin");
-    const redirectTo = process.env.NEXT_PUBLIC_REDIRECT_URL || origin;
+    
     const { error } = await supabase.auth.resetPasswordForEmail(
       formData.get("email") as string,
       {
-        redirectTo: `${redirectTo}/reset-password`,
+        redirectTo: `${origin}/reset-password`,
       }   
     );
 
