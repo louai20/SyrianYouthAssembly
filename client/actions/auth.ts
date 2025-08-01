@@ -44,22 +44,6 @@ export async function signUp(formData: FormData) {
     const { error, data } = await supabase.auth.signUp({
         email: credentials.email,
         password: credentials.password,
-        options: {
-            data: {
-                first_name: credentials.first_name,
-                last_name: credentials.last_name,
-                phone_number: credentials.phone_number,
-                gender: credentials.gender,
-                birth_date: credentials.birth_date,
-                nationality_country: credentials.nationality_country,
-                residence_country: credentials.residence_country,
-                residence_city: credentials.residence_city,
-                displacement_status: credentials.displacement_status,
-                education_degree: credentials.education_degree,
-                english_level: credentials.english_level,
-                employment_status: credentials.employment_status,
-            },
-        },
     });
 
     if (error) {
