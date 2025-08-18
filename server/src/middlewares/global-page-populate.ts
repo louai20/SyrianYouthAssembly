@@ -12,7 +12,7 @@ const populate = {
           populate: {
             links: true,
             image: {
-              fields: ["alternativeText", "url"]
+              fields: ["alternativeText", "url", "height", "width"]
           }
         }
       },

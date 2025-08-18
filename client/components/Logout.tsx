@@ -1,6 +1,5 @@
 "use client";
 import { signOut } from "@/actions/auth";
-import { sign } from "crypto";
 import React, { useState } from "react";
 
 const Logout = () => {
