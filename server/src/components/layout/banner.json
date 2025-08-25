@@ -16,11 +16,6 @@
     },
     "description": {
       "type": "text"
-    },
-    "header": {
-      "type": "component",
-      "component": "layout.header",
-      "repeatable": false
     }
   },
   "config": {}

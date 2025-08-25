@@ -9,7 +9,7 @@ import { PersonCard } from "@/components/blocks/PersonCard";
 import { FAQs } from "@/components/blocks/FAQs";
 import { Newsletter } from "@/components/blocks/Newsletter";
 import { FeaturedArticles } from "@/components/blocks/FeaturedArticles";
-import { StrapiGlobal } from "@/types/strapi";
+import { GlobalResponse } from "@/types/strapi";
 
 export function renderBlock(block: PageBlock) {
   switch (block.__component) {
@@ -56,7 +56,7 @@ export async function fetchPage(slug: string) {
   }
 }
 
-export async function fetchGlobalData(): Promise<StrapiGlobal> {
+export async function fetchGlobalData(): Promise<GlobalResponse> {
   const res = await fetch(`${process.env.STRAPI_API_URL}/global`, {
       next: { revalidate: 10 },
     });

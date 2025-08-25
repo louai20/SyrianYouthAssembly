@@ -113,7 +113,6 @@ export interface LayoutBanner extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
-    header: Schema.Attribute.Component<'layout.header', false>;
     isVisible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     link: Schema.Attribute.Component<'shared.link', false>;
   };

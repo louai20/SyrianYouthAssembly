@@ -31,7 +31,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="mx-auto max-w-screen-lg h-screen flex flex-col">
-          <Navbar navbar={globalData.navbar} />
+          <Navbar navbar={globalData.header} />
           <div className="flex-grow">{children}</div>
         </div>
       </body>

@@ -7,6 +7,7 @@ export type Image = {
   height?: number;
 }
 
+
 export type Link = {
   id: number
   label: string
@@ -16,16 +17,31 @@ export type Link = {
   type: string
 }
 
+
+
 // Global types for Strapi
 
-export type NavItem = {
+export type Banner = {
   id: number
-  label: string
-  href: string
-  isButtonLink: boolean
-  isExternal: boolean
-  type: string
+  isVisible: boolean
+  description?: string
+  image?: Image
 }
+
+
+export type Header = {
+  id: number;
+  logo: {
+    id: number;
+    label: string;
+    href: string;
+    // add image if needed
+  };
+  navItems: NavItem[];
+  login_sys: any[]; // refine later if needed
+};
+
+
 
 export type SocialLink = {
   id: number
@@ -33,10 +49,6 @@ export type SocialLink = {
   image?: Image
 }
 
-export type Banner = {
-  link: Link
-  image?: Image
-}
 
 export type Footer = {
   logo?: Image
@@ -44,14 +56,26 @@ export type Footer = {
   socialLinks: SocialLink[]
 }
 
-export type GlobalData = {
-  banner?: Banner
-  navbar?: {
-    navItems: NavItem[]
-  }
-  footer?: Footer
-}
+// Single navigation item
+export type NavItem = {
+  id: number;
+  href: string;
+  label: string;
+  isExternal?: boolean;
+  isButtonLink?: boolean;
+};
 
+type GlobalResponse = {
+  data: {
+    id: number;
+    documentId: string;
+    title: string;
+    banner: Banner;
+    footer: Footer;
+    header: Header;
+  };
+  meta: {};
+};
 // Block Types
 
 export type HeroBlock = {

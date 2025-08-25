@@ -3,12 +3,16 @@ import Link from "next/link";
 import React from "react";
 import Logout from "./Logout";
 import { createClient } from "@/utils/supabase/server";
-import { GlobalData, NavItem } from "@/types/strapi";
-
+import { NavItem } from "@/types/strapi";
 // Props to receive global data from Strapi
 interface NavbarProps {
   navbar: {
     navItems: NavItem[];
+    banner: {
+      header: {
+        navItems: NavItem[];
+      };
+    };
   };
 }
 
@@ -27,6 +31,18 @@ const Navbar = async ({ navbar }: NavbarProps) => {
           <Link href="/private">Private</Link>
         </div>
 
+        <div className="flex items-center gap-x-5">
+          {navbar.navItems.map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              target={item.isExternal ? "_blank" : undefined}
+              className={item.isButtonLink ? "bg-blue-600 text-white px-4 py-2 rounded-sm" : ""}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div> 
 
         <div className="flex items-center gap-x-5">
           {!user ? (

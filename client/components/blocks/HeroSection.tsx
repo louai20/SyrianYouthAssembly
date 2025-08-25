@@ -4,23 +4,16 @@ import { HeroBlock } from "@/types/strapi";
 
 export function HeroSection({ heading, text, links, image }: HeroBlock) {
   return (
-    <section className="py-16 text-center">
-      <h1 className="text-4xl font-bold">{heading}</h1>
-      {text && <p className="mt-4 text-lg">{text}</p>}
-
-      {image && (
-        <div className="mx-auto mt-6 max-w-xl relative w-full h-64">
-          <Image
-            src={image.url.startsWith("http") ? image.url : `${"http://192.168.1.180:1337"}${image.url}`}
-            alt={image.alternativeText ?? ""}
-            width={image.width}
-            height={image.height}
-            style={{ objectFit: "cover", float: "right" }}
-            priority
-          />
-        </div>
-      )}
-
+  <section
+    className="relative bg-cover bg-center text-white py-20 px-4 rounded-lg overflow-hidden"
+    style={{ backgroundImage: `url(${image?.url.startsWith("http") ? image?.url : `${"http://192.168.1.180:1337"}${image?.url}`})` }}
+  >
+    <div className="absolute inset-0 bg-primary-700 opacity-75 pointer-events-none"></div>
+    <div className="relative z-10 text-center">
+      <h1 className="text-4xl md:text-5xl font-extrabold mb-4">{heading}</h1>
+      <p className="text-lg text-gray-200 max-w-2xl mx-auto mb-8">{text}</p>
+    </div>
+    
       {links?.length > 0 && (
         <div className="mt-6 flex justify-center gap-4">
           {links.map((link) => (

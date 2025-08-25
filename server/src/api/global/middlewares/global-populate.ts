@@ -10,8 +10,17 @@ const populate = {
         link: true
       },
     },
-
-  
+    header:{
+      populate: {
+        logo: {
+          populate:{
+            image: true,
+          },
+        },
+        navItems: true,
+        login_sys: true,
+        },
+      },
     footer: {
       populate: {
         logo: {
