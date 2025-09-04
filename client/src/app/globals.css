@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ededed;
     --foreground: #ededed;
   }
 }
@@ -24,3 +24,58 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* styles/globals.css */
+.markdown a {
+  color: #2563eb; /* Tailwind blue-600 */
+  text-decoration: underline;
+}
+
+.markdown a:hover {
+  color: #1d4ed8; /* Tailwind blue-800 */
+}
+
+.markdown h1 {
+  color: #60a5fa; /* light blue */
+  font-size: 3rem; /* large */
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.markdown p {
+  color: #1f2937; /* dark gray */
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+  /* Subheading H2 */
+  .markdown h2 {
+    text-align: right; /* right-aligned for Arabic */
+    color: #2563eb;    /* slightly darker blue */
+    font-size: 1.5rem;   /* smaller than h1 */
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e0e7ff; /* optional underline effect */
+    padding-bottom: 0.5rem;
+  }
+
+    /* Bulleted lists */
+  .markdown ul {
+    list-style-type: disc; /* default bullets */
+    padding-right: 1.5rem; /* space for bullets in RTL */
+    margin-bottom: 1rem;
+  }
+
+  .markdown ul li {
+    margin-bottom: 0.5rem; /* spacing between items */
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #1f2937;
+  }
+
+  .markdown ul li::marker {
+  color: #2563eb; /* blue bullets */
+}
+

@@ -19,16 +19,16 @@ interface NavbarProps {
 const Navbar = async ({ navbar }: NavbarProps) => {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
+  
   return (
-    <nav className="border-b bg-background w-full flex items-center">
-      <div className="flex w-full items-center justify-between my-4">
-        <Link className="font-bold" href="/">
+    <nav className="bg-background border-b shadow-md ">
+      <div className="container mx-auto flex justify-between items-center py-4 px-6">
+        <Link className="font-bold text-xl text-blue-600 hover:text-blue-800" href="/">
           Home
         </Link>
 
-        <div className="flex items-center gap-x-5">
-          <Link href="/private">Private</Link>
+        <div className="flex space-x-6">
+          <Link href="/private" className="text-l text-gray-700 hover:text-blue-600">Private</Link>
         </div>
 
         <div className="flex items-center gap-x-5">
@@ -37,7 +37,7 @@ const Navbar = async ({ navbar }: NavbarProps) => {
               key={item.id}
               href={item.href}
               target={item.isExternal ? "_blank" : undefined}
-              className={item.isButtonLink ? "bg-blue-600 text-white px-4 py-2 rounded-sm" : ""}
+              className={`text-l text-gray-700 hover:text-blue-600 ${item.isButtonLink ? "bg-blue-600 text-white px-4 py-2 rounded-sm" : ""}`}
             >
               {item.label}
             </Link>
@@ -47,13 +47,13 @@ const Navbar = async ({ navbar }: NavbarProps) => {
         <div className="flex items-center gap-x-5">
           {!user ? (
             <Link href="/login">
-              <div className="bg-blue-600 text-white text-sm px-4 py-2 rounded-sm">
+              <div className="bg-blue-600 text-white text-sm px-4 py-2 rounded-sm hover:bg-blue-700">
                 Login
               </div>
             </Link>
           ) : (
             <>
-              <div className="flex items-center gap-x-2 text-sm">{user?.email}</div>
+              <div className="text-sm text-gray-700">{user?.email}</div>
               <Logout />
             </>
           )}

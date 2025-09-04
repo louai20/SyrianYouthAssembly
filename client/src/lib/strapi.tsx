@@ -11,7 +11,7 @@ import { Newsletter } from "@/components/blocks/Newsletter";
 import { FeaturedArticles } from "@/components/blocks/FeaturedArticles";
 import { GlobalResponse } from "@/types/strapi";
 
-export function renderBlock(block: PageBlock) {
+export async function renderBlock(block: PageBlock) {
   switch (block.__component) {
     case "blocks.hero":
       return <HeroSection key={block.id} {...block} />
@@ -22,7 +22,7 @@ export function renderBlock(block: PageBlock) {
     case "blocks.content-with-image":
       return <ContentWithImage key={block.id} {...block} />
     case "blocks.markdown":
-      return <Markdown key={block.id} {...block} />
+      return await <Markdown key={block.id} {...block} />
     case "blocks.person-card":
       return <PersonCard key={block.id} {...block} />
     case "blocks.faqs":

@@ -33,7 +33,7 @@ export default async function LandingPage() {
 
   return (
     <main>
-      {blocks.map((block) => renderBlock(block))}
+      {await Promise.all(blocks.map(block => renderBlock(block)))}
     </main>
   );
 }

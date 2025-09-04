@@ -65,7 +65,7 @@ export type NavItem = {
   isButtonLink?: boolean;
 };
 
-type GlobalResponse = {
+export type GlobalResponse = {
   data: {
     id: number;
     documentId: string;
@@ -111,7 +111,7 @@ export type ContentWithImageBlock = {
 export type MarkdownBlock = {
   id: number
   __component: "blocks.markdown"
-  body: string
+  content: string | null
 }
 
 export type PersonCardBlock = {
@@ -125,7 +125,7 @@ export type PersonCardBlock = {
 export type FAQsBlock = {
   id: number
   __component: "blocks.faqs"
-  faq: { id: number; question: string; answer: string }[]
+  faq: { id: number; heading: string; text: string }[]
 }
 
 export type NewsletterBlock = {
