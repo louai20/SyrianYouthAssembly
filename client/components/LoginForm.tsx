@@ -1,61 +1,79 @@
 "use client";
 import React, { useState } from "react";
-import AuthButton from "./AuthButton";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/actions/auth";
+import { createClient } from "@/utils/supabase/client";
+import AuthButton from "./AuthButton";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
+  const [loading, setLoading] = useState(false);
 
-    const formData = new FormData(event.currentTarget);
-        const result = await signIn(formData);
-    
-        if(result.status === "success") {
-          router.push("/");
-        }else {
-            setError(result.status)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    const supabase = createClient();
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      toast.error(error.message || "Login failed. Please check your email or password.");
+      setLoading(false);
+      return;
     }
+
+    toast.success("Login successful!");
     setLoading(false);
+    router.push("/"); // redirect after toast
   };
+
+  const handleForgotPassword = () => {
+    router.push("/reset-password"); // link to your reset password page
+  };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-200">
-            Email
-          </label>
-          <input
-            type="email"
-            placeholder="Email"
-            id="Email"
-            name="email"
-            className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-200">
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            id="password"
-            className="mt-1 w-full px-4 p-2  h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700"
-          />
-        </div>
-        <div className="mt-4">
-          <AuthButton type="login" loading={loading} />
-        </div>
-        {error && <p className="text-red-500">{error}</p>}
-      </form>
-    </div>
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-md mx-auto flex flex-col gap-4 bg-white p-6 rounded-2xl shadow-lg"
+    >
+      <h2 className="text-2xl font-bold text-gray-800 text-center">Login</h2>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          className="mt-1 w-full px-4 h-10 rounded-md border border-gray-300 bg-white text-sm text-gray-700"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          className="mt-1 w-full px-4 h-10 rounded-md border border-gray-300 bg-white text-sm text-gray-700"
+          required
+        />
+      </div>
+
+      <AuthButton type="login" loading={loading} />
+
+      {/* Forgot Password Link */}
+      <p
+        className="text-blue-600 text-sm text-right mt-2 cursor-pointer hover:underline"
+        onClick={handleForgotPassword}
+      >
+        Forgot Password?
+      </p>
+    </form>
   );
 };
 

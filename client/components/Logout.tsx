@@ -1,26 +1,36 @@
 "use client";
-import { signOut } from "@/actions/auth";
-import React, { useState } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-const Logout = () => {
+export default function Logout() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleLogout = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleLogout = async () => {
     setLoading(true);
-    await signOut();
+    const supabase = createClient();
+    const { error } = await supabase.auth.signOut();
     setLoading(false);
+
+    if (error) {
+      toast.error(error.message || "Failed to sign out.");
+      console.error(error);
+      return;
+    }
+
+    toast.success("Signed out successfully!");
+    router.push("/login"); // redirect after toast
   };
 
   return (
-    <div className="bg-gray-600 text-white text-sm px-4 py-2 rounded-md cursor-pointer">
-      <form onSubmit={handleLogout}>
-        <button type="submit" disabled={loading}>
-          {loading ? "Signing out..." : "Sign out"}
-        </button>
-      </form>
-    </div>
+    <button
+      onClick={handleLogout}
+      disabled={loading}
+      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+    >
+      {loading ? "Signing out..." : "Sign out"}
+    </button>
   );
-};
-
-export default Logout;
+}

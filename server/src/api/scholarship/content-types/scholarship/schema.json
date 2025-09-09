@@ -16,7 +16,24 @@
       "required": true,
       "unique": false
     },
-    "image": {
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "shortDescription": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "amount": {
+      "type": "biginteger"
+    },
+    "deadline": {
+      "type": "datetime",
+      "required": false
+    },
+    "coverImage": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -24,8 +41,24 @@
         "images"
       ]
     },
-    "description": {
+    "applyLink": {
+      "type": "string",
+      "required": true
+    },
+    "formFields": {
+      "type": "dynamiczone",
+      "components": [
+        "form.field"
+      ]
+    },
+    "eligibility": {
       "type": "text"
+    },
+    "scholarship_applications": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::scholarship-application.scholarship-application",
+      "mappedBy": "scholarship"
     }
   }
 }

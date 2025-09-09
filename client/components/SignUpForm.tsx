@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AuthButton from "./AuthButton";
 import { useRouter } from "next/navigation";
 import { signUp } from "@/actions/auth";
+import toast from "react-hot-toast";
 
 const SignUpForm = () => {
   const [error, setError] = useState<string | null>(null);
@@ -15,104 +16,102 @@ const SignUpForm = () => {
     setLoading(true);
     setError(null);
     const formData = new FormData(event.currentTarget);
-    const result = await signUp(formData);
+    const toastId = toast.loading("Creating your account...");
 
-    if (result.status === "success") {
-      router.push("/login");
-    } else {
-      setError(result.status);
+    try {
+      const result = await signUp(formData);
+
+      if (result.status === "success") {
+        toast.success("تم إنشاء الحساب! تحقق من بريدك الإلكتروني للتأكيد.", { id: toastId });
+        router.push("/login");
+      } else {
+        setError(result.status);
+        toast.error(result.status, { id: toastId });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("حدث خطأ أثناء التسجيل.", { id: toastId });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
-        {/* Section 1 */}
-        <div className={step !== 1 ? "hidden" : ""}>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Email</label>
-            <input type="email" name="email" placeholder="Email" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-lg mx-auto flex flex-col gap-3 bg-white p-8 rounded-3xl shadow-xl"
+    >
+      <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Sign Up</h2>
+
+      {/* Step 1 */}
+      <div className={step !== 1 ? "hidden" : "flex flex-col gap-3"}>
+        {["email", "first_name", "last_name", "phone_number", "birth_date", "password", "password_confirmation"].map((name) => (
+          <div key={name}>
+            <label className="block text-sm font-medium text-gray-700 capitalize">
+              {name.replace("_", " ")}
+            </label>
+            <input
+              type={name.includes("password") ? "password" : name === "email" ? "email" : name === "birth_date" ? "date" : "text"}
+              name={name}
+              placeholder={name.replace("_", " ")}
+              className="mt-1 w-full px-4 py-3 h-12 rounded-xl border border-gray-300 bg-white text-base text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              required
+            />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">First Name</label>
-            <input type="text" name="first_name" placeholder="First Name" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
+        ))}
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Gender</label>
+          <select
+            name="gender"
+            className="mt-1 w-full px-4 py-3 h-12 rounded-xl border border-gray-300 bg-white text-base text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          >
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="prefer_not_to_say">Prefer not to say</option>
+          </select>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setStep(2)}
+          className="mt-4 p-3 w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transform transition-all"
+        >
+          Next
+        </button>
+      </div>
+
+      {/* Step 2 */}
+      <div className={step !== 2 ? "hidden" : "flex flex-col gap-3"}>
+        {["nationality_country", "residence_country", "residence_city", "displacement_status", "education_degree", "english_level", "employment_status"].map((name) => (
+          <div key={name}>
+            <label className="block text-sm font-medium text-gray-700 capitalize">
+              {name.replace("_", " ")}
+            </label>
+            <input
+              type="text"
+              name={name}
+              placeholder={name.replace("_", " ")}
+              className="mt-1 w-full px-4 py-3 h-12 rounded-xl border border-gray-300 bg-white text-base text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Last Name</label>
-            <input type="text" name="last_name" placeholder="Last Name" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Phone Number</label>
-            <input type="tel" name="phone_number" placeholder="Phone Number" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Gender</label>
-            <select name="gender" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700">
-              <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="prefer_not_to_say">Prefer not to say</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Birth Date</label>
-            <input type="date" name="birth_date" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Password</label>
-            <input type="password" name="password" placeholder="Password" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Confirm Password</label>
-            <input type="password" name="password_confirmation" placeholder="Confirm Password" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <button type="button" onClick={() => setStep(2)} className="mt-4 p-2 bg-blue-600 text-white rounded-md">
-            Next
+        ))}
+
+        <div className="flex justify-between mt-4 gap-2">
+          <button
+            type="button"
+            onClick={() => setStep(1)}
+            className="flex-1 p-3 bg-gray-600 text-white font-semibold rounded-xl shadow hover:bg-gray-700 transition"
+          >
+            Previous
           </button>
+          <AuthButton type="Sign up" loading={loading}  />
         </div>
+      </div>
 
-        {/* Section 2 */}
-        <div className={step !== 2 ? "hidden" : ""}>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Nationality Country</label>
-            <input type="text" name="nationality_country" placeholder="Nationality Country" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Residence Country</label>
-            <input type="text" name="residence_country" placeholder="Residence Country" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Residence City</label>
-            <input type="text" name="residence_city" placeholder="Residence City" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Displacement Status</label>
-            <input type="text" name="displacement_status" placeholder="Displacement Status" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Education Degree</label>
-            <input type="text" name="education_degree" placeholder="Education Degree" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">English Level</label>
-            <input type="text" name="english_level" placeholder="English Level" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-200">Employment Status</label>
-            <input type="text" name="employment_status" placeholder="Employment Status" className="mt-1 w-full px-4 p-2 h-10 rounded-md border border-gray-200 bg-white text-sm text-gray-700" />
-          </div>
-          <div className="flex justify-between mt-4">
-            <button type="button" onClick={() => setStep(1)} className="m-1 p-2 bg-gray-600 text-white rounded-md">
-              Previous
-            </button>
-            <AuthButton type="Sign up" loading={loading} />
-          </div>
-        </div>
-
-        {error && <p className="text-red-500">{error}</p>}
-      </form>
-    </div>
+      {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+    </form>
   );
 };
 

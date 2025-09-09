@@ -609,6 +609,46 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiScholarshipApplicationScholarshipApplication
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'scholarship_applications';
+  info: {
+    displayName: 'Scholarship-Application';
+    pluralName: 'scholarship-applications';
+    singularName: 'scholarship-application';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    applicant_status: Schema.Attribute.Enumeration<
+      ['received', 'in_review', 'accepted', 'rejected']
+    > &
+      Schema.Attribute.DefaultTo<'received'>;
+    applicantEmail: Schema.Attribute.String;
+    applicantId: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    files: Schema.Attribute.Media<'files', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::scholarship-application.scholarship-application'
+    > &
+      Schema.Attribute.Private;
+    payload: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    scholarship: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::scholarship.scholarship'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiScholarshipScholarship extends Struct.CollectionTypeSchema {
   collectionName: 'scholarships';
   info: {
@@ -620,11 +660,16 @@ export interface ApiScholarshipScholarship extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    amount: Schema.Attribute.BigInteger;
+    applyLink: Schema.Attribute.String & Schema.Attribute.Required;
+    coverImage: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    image: Schema.Attribute.Media<'images'>;
+    deadline: Schema.Attribute.DateTime;
+    description: Schema.Attribute.RichText;
+    eligibility: Schema.Attribute.Text;
+    formFields: Schema.Attribute.DynamicZone<['form.field']>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -632,6 +677,12 @@ export interface ApiScholarshipScholarship extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    scholarship_applications: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::scholarship-application.scholarship-application'
+    >;
+    shortDescription: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1223,6 +1274,7 @@ declare module '@strapi/strapi' {
       'api::home.home': ApiHomeHome;
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::page.page': ApiPagePage;
+      'api::scholarship-application.scholarship-application': ApiScholarshipApplicationScholarshipApplication;
       'api::scholarship.scholarship': ApiScholarshipScholarship;
       'api::tag.tag': ApiTagTag;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;

@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_form_fields",
+  "info": {
+    "displayName": "Field"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "text",
+        "textarea",
+        "email",
+        "number",
+        "date",
+        "select",
+        "radio",
+        "checkbox",
+        "file"
+      ]
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "options": {
+      "type": "component",
+      "component": "form.option",
+      "repeatable": true
+    },
+    "prefillFrom": {
+      "type": "enumeration",
+      "enum": [
+        "none",
+        "fullName",
+        "email",
+        "phone"
+      ]
+    }
+  },
+  "config": {}
+}

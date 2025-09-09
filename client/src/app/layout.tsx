@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { fetchGlobalData } from "@/lib/strapi";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default async function RootLayout({
           <Navbar navbar={globalData.header} />
           <div className="flex-grow">{children}</div>
         </div>
+        <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>
   );

@@ -1,10 +1,8 @@
-// src/components/Navbar.tsx
 import Link from "next/link";
 import React from "react";
-import Logout from "./Logout";
-import { createClient } from "@/utils/supabase/server";
 import { NavItem } from "@/types/strapi";
-// Props to receive global data from Strapi
+import UserMenu from "./UserMenu"; // import the client component
+
 interface NavbarProps {
   navbar: {
     navItems: NavItem[];
@@ -17,11 +15,8 @@ interface NavbarProps {
 }
 
 const Navbar = async ({ navbar }: NavbarProps) => {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
   return (
-    <nav className="bg-background border-b shadow-md ">
+    <nav className="bg-background border-b shadow-md">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <Link className="font-bold text-xl text-blue-600 hover:text-blue-800" href="/">
           Home
@@ -42,27 +37,13 @@ const Navbar = async ({ navbar }: NavbarProps) => {
               {item.label}
             </Link>
           ))}
-        </div> 
-
-        <div className="flex items-center gap-x-5">
-          {!user ? (
-            <Link href="/login">
-              <div className="bg-blue-600 text-white text-sm px-4 py-2 rounded-sm hover:bg-blue-700">
-                Login
-              </div>
-            </Link>
-          ) : (
-            <>
-              <div className="text-sm text-gray-700">{user?.email}</div>
-              <Logout />
-            </>
-          )}
         </div>
+
+        {/* Client component that reacts to auth changes */}
+        <UserMenu />
       </div>
     </nav>
   );
 };
 
 export default Navbar;
-
-

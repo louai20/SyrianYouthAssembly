@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "scholarship_applications",
+  "info": {
+    "singularName": "scholarship-application",
+    "pluralName": "scholarship-applications",
+    "displayName": "Scholarship-Application"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "scholarship": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::scholarship.scholarship",
+      "inversedBy": "scholarship_applications"
+    },
+    "applicantEmail": {
+      "type": "string"
+    },
+    "applicantId": {
+      "type": "string"
+    },
+    "applicant_status": {
+      "type": "enumeration",
+      "default": "received",
+      "enum": [
+        "received",
+        "in_review",
+        "accepted",
+        "rejected"
+      ]
+    },
+    "payload": {
+      "type": "json"
+    },
+    "files": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "files"
+      ]
+    }
+  }
+}

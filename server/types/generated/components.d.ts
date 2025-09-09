@@ -106,6 +106,47 @@ export interface BlocksSectionHeading extends Struct.ComponentSchema {
   };
 }
 
+export interface FormField extends Struct.ComponentSchema {
+  collectionName: 'components_form_fields';
+  info: {
+    displayName: 'Field';
+  };
+  attributes: {
+    label: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    options: Schema.Attribute.Component<'form.option', true>;
+    placeholder: Schema.Attribute.String;
+    prefillFrom: Schema.Attribute.Enumeration<
+      ['none', 'fullName', 'email', 'phone']
+    >;
+    required: Schema.Attribute.Boolean;
+    type: Schema.Attribute.Enumeration<
+      [
+        'text',
+        'textarea',
+        'email',
+        'number',
+        'date',
+        'select',
+        'radio',
+        'checkbox',
+        'file',
+      ]
+    >;
+  };
+}
+
+export interface FormOption extends Struct.ComponentSchema {
+  collectionName: 'components_form_options';
+  info: {
+    displayName: 'Option';
+  };
+  attributes: {
+    label: Schema.Attribute.String;
+    value: Schema.Attribute.String;
+  };
+}
+
 export interface LayoutBanner extends Struct.ComponentSchema {
   collectionName: 'components_layout_banners';
   info: {
@@ -193,6 +234,8 @@ declare module '@strapi/strapi' {
       'blocks.newsletter': BlocksNewsletter;
       'blocks.person-card': BlocksPersonCard;
       'blocks.section-heading': BlocksSectionHeading;
+      'form.field': FormField;
+      'form.option': FormOption;
       'layout.banner': LayoutBanner;
       'layout.footer': LayoutFooter;
       'layout.header': LayoutHeader;
